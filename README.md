@@ -40,7 +40,7 @@ n\
 enter\
 enter\
 enter\
-w\
+w
 
 **filesystems**
 
