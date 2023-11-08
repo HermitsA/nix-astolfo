@@ -13,7 +13,7 @@ Timeline rn: \
 standard nix env (done!) -> Flake / Home-manager overhaul -> Install script - Release
 
 
-# Current install guide for nixos \
+# Current install guide for nixos 
 "
 sudo -i
 
