@@ -14,14 +14,19 @@ standard nix env (done!) -> Flake / Home-manager overhaul -> Install script - Re
 
 
 # Current install guide for nixos 
-"
+
 sudo -i
 
-#check devices
+**check devices**
+
 lsblk 
- **choose which device you want**\
+
+**choose which device you want**\
+
 **for nvme devices its /dev/nvme**\ 
+
 **for sata devices its /dev/sda** \
+
 **choose which install you want, in this guide its gonna be nvme for bare metal**\
 
 
@@ -29,17 +34,30 @@ lsblk
 
 cfdisk /dev/nvme0n1\
 
-d\
-n\
-enter\
-enter\
-+1024Mib\
-t\
-1\
-n\
-enter\
-enter\
-enter\
+d
+
+n
+
+enter
+
+enter
+
++1024Mib
+
+enter
+
+t
+
+1
+
+n
+
+enter
+
+enter
+
+enter
+
 w
 
 **filesystems**
@@ -75,7 +93,8 @@ exit
 
 **nixos unstable/HM install**
 
-sudo sh nix-astolfo/scripts/nix-unstable.sh \
+sudo sh nix-astolfo/scripts/nix-unstable.sh 
+
 sudo sh nix-astolfo/scripts/home-manager.sh
 
 **copy nixos config**
