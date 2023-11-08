@@ -19,10 +19,10 @@ sudo -i
 
 #check devices
 lsblk 
-# choose which device you want
-# for nvme devices its /dev/nvme
-# for sata devices its /dev/sda
-# choose which install you want, in this guide its gonna be nvme for bare metal
+ ** choose which device you want **\
+** for nvme devices its /dev/nvme **\ 
+** for sata devices its /dev/sda **/
+** choose which install you want, in this guide its gonna be nvme for bare metal \
 
 
 # Partitioning your device:
