@@ -86,5 +86,5 @@ sudo reboot
 
 # Post install
 
-sh nix-unstable.sh
-sh home-manager.sh
+sudo sh nix-unstable.sh
+sudo sh home-manager.sh
