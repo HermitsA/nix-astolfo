@@ -73,6 +73,11 @@ git clone https://github.com/HermtisA/nix-astolfo.git
 
 exit
 
+**nixos unstable/HM install**
+
+sudo sh nix-astolfo/scripts/nix-unstable.sh \
+sudo sh nix-astolfo/scripts/home-manager.sh
+
 **copy nixos config**
 cp nix-astolfo/nixos/* /mnt/etc/
 
@@ -86,5 +91,4 @@ sudo reboot
 
 # Post install
 
-sudo sh nix-unstable.sh
-sudo sh home-manager.sh
+gaming!
