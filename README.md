@@ -27,20 +27,20 @@ lsblk
 
 **Partitioning your device:**
 
-cfdisk /dev/nvme0n1
+cfdisk /dev/nvme0n1\
 
-d
-n
-enter
-enter
-+1024Mib
-t
-1
-n
-enter
-enter
-enter
-w
+d\
+n\
+enter\
+enter\
++1024Mib\
+t\
+1\
+n\
+enter\
+enter\
+enter\
+w\
 
 **filesystems**
 
