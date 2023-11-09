@@ -29,6 +29,12 @@
   boot.initrd.kernelModules = ["nvidia"];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   networking.hostName = "rider"; # Define your hostname.
+
+
+system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable/";
+system.autoUpgrade.channel = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+
+
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
    networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
