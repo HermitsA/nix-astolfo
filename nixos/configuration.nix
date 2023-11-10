@@ -32,7 +32,7 @@
 
 
 system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable/";
-system.autoUpgrade.channel = "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+system.autoUpgrade.channel = "https://github.com/nix-community/home-manager/archive/master.tar.gz/";
 
 
   # Pick only one of the below networking options.
