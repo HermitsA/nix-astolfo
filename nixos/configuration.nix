@@ -122,7 +122,8 @@ swww
 steam
 rofi
 #swaylock
-xdg-desktop-portal-hyprland
+#xdg-desktop-portal-hyprland
+grim
    ];
 environment.variables.EDITOR = "nano";
   # Some programs need SUID wrappers, can be configured further or are
