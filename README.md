@@ -15,6 +15,33 @@ working on partitioning script and stuff
 
 # Current install guide for nixos 
 
+**get usb drive**
+
+(for ventoy sigmas)
+
+download this
+https://channels.nixos.org/nixos-23.05/latest-nixos-minimal-x86_64-linux.iso
+
+(for non ventoy sigmas)
+
+https://channels.nixos.org/nixos-23.05/latest-nixos-minimal-x86_64-linux.iso
+
+https://rufus.ie/en/
+
+download one of them
+
+select usb drive
+
+select the iso
+
+start
+
+give it a few minutes after finish in case
+
+
+**boot into bios and select**
+
+
 sudo -i
 
 **check devices**
