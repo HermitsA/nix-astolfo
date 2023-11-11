@@ -1,7 +1,7 @@
 ########################################
-
-FOR POST DISK PARTITION WILL
-
+#                                      #
+#FOR POST DISK PARTITION WILL          #
+#                                      #
 ########################################
 nix-shell -p git | sudo git clone https://github.com/HermitsA/nix-astolfo.git & exit
 sudo nixos-generate-config --root /mnt
