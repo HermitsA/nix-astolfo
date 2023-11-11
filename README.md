@@ -7,11 +7,11 @@ Learned nix/HM for this
 
 Astolfo OS current progress (non flake configs)
 
-Flake/Home-manager overheal soon 
 
 Timeline rn: \
-standard nix env (done!) -> Flake / Home-manager overhaul -> Install script - Release
+standard nix env (done!) -> Install script - Release \
 
+working on partitioning script and stuff
 
 # Current install guide for nixos 
 
