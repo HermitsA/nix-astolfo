@@ -5,10 +5,11 @@
 {
 	nixpkgs.config.allowUnfree = true;
 	nix.settings.experimental-features = [ "nix-command" "flakes" ]; 
+system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
   imports =
     [ 
       ./hardware-configuration.nix
-	<home-manager/nixos>
+	(import "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos")
 #	./flake.nix
 ];
 #	home-manager = {
