@@ -7,7 +7,7 @@
 
 
 environment.interactiveShellInit = ''
-alias neofetch='neofetch --source /home/astolfo/nix-astolfo/neofetch-store/astolfo'
+alias neofetch='neofetch --source /home/astolfo/nix-astolfo/astolfo'
 '';
 
 	nixpkgs.config.allowUnfree = true;
