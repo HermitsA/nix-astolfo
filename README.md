@@ -75,35 +75,21 @@ mount /dev/nvme0n1p1 /mnt/boot
 
 cd /mnt
 
-**make swapfile**
-dd if=/dev/zero of=/mnt/.swapfile bs=1024 count=8000000
-
-mkswap .swapfile
-
-swapon
-
-
 **get git clone**
 
 
-nix-shell -p git
+nix-shell -p git 
 git clone https://github.com/HermtisA/nix-astolfo.git
 
 exit
 
-**nixos unstable/HM install**
+**thing**
 
-sudo sh nix-astolfo/scripts/nix-unstable.sh 
+cd nix-astolfo
 
-sudo sh nix-astolfo/scripts/home-manager.sh
+sudo sh init.sh
 
-**copy nixos config**
-cp nix-astolfo/nixos/* /mnt/etc/
-
-cd /mnt/etc/nixos
-
-**install nixos**
-nixos-install
+**done!!!**
 
 sudo reboot
 
