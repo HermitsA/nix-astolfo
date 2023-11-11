@@ -128,6 +128,7 @@ git
 gcc
 cmake
 discord
+nwg-displays
 swww
 steam
 rofi
