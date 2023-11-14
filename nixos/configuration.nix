@@ -139,6 +139,7 @@ git
 gcc
 cmake
 nwg-displays
+wireplumber
 discord
 swww
 steam
