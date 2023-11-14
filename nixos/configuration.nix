@@ -142,6 +142,7 @@ nwg-displays
 wireplumber
 discord
 swww
+atlauncher
 steam
 rofi
 neofetch
