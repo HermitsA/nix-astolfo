@@ -172,10 +172,8 @@ wlr-randr
 libsForQt5.discover
 libsForQt5.packagekit-qt
 libportal-qt5
-#eww
-#qt5-quickcontrols2
-#qt5-graphicaleffects
-#qt5-svg
+grim
+
   
    ];
 
@@ -299,7 +297,8 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-bind = $mainMod, G, exec, plasma-discover --backends flatpak # store
+#bind = $mainMod, G, exec, plasma-discover --backends flatpak # store
+bind = $mainMod, S, exec, grim -g "$(slurp)"
 
 
 
