@@ -234,6 +234,7 @@ in {
   imports = [
     hyprland.homeManagerModules.default
   ];
+
   programs.librewolf = {
     enable = true;
     # Enable WebGL, cookies and history
