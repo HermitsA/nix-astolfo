@@ -8,7 +8,7 @@
 #funny astolfo neofetch
 
 environment.interactiveShellInit = ''
-alias neofetch='neofetch --source /home/astolfo/nix-astolfo/neofetch-store/astolfo'
+alias neofetch='neofetch --source /home/astolfo/nix-astolfo/Imgs&Ascii/astolfo'
 '';
 
 #enable flakes and unfree
@@ -279,7 +279,7 @@ wayland.windowManager.hyprland = {
 enable = true;
 extraConfig = "
 
-exec-once = swww init && swww img /home/astolfo/nix-astolfo/astolfo.png
+exec-once = swww init && swww img /home/astolfo/nix-astolfo/Imgs&Ascii/astolfo.png
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
