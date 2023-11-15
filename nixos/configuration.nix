@@ -253,13 +253,6 @@ in {
 
 
 
-#programs.eww = {
-#enable = true;
-#configDir = /home/astolfo/nix-astolfo/dotfiles/eww;
-#};
-
-
-
 programs.kitty = {
 enable = true;
 theme = "Wild Cherry";
