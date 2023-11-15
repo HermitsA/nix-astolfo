@@ -1,4 +1,3 @@
-Release 14 november? maybe
 funny nix configs about astolfo
 hyprland rice
 Learned nix/HM for this
@@ -7,11 +6,6 @@ Learned nix/HM for this
 
 Astolfo OS current progress (non flake configs)
 
-
-Timeline rn: \
-standard nix env (done!) -> Install script - Release \
-
-working on partitioning script and stuff
 
 # Current install guide for nixos 
 
@@ -24,7 +18,9 @@ https://channels.nixos.org/nixos-23.05/latest-nixos-minimal-x86_64-linux.iso
 
 (for non ventoy sigmas)
 
+
 https://channels.nixos.org/nixos-23.05/latest-nixos-minimal-x86_64-linux.iso
+
 
 https://rufus.ie/en/
 
