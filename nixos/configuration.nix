@@ -157,6 +157,7 @@ git
 gcc
 cmake
 nwg-displays
+slurp
 wireplumber
 discord
 swww
