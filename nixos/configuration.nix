@@ -5,10 +5,13 @@
 {
 
 
+#funny astolfo neofetch
 
 environment.interactiveShellInit = ''
 alias neofetch='neofetch --source /home/astolfo/nix-astolfo/neofetch-store/astolfo'
 '';
+
+#enable flakes and unfree
 
 	nixpkgs.config.allowUnfree = true;
 	nix.settings.experimental-features = [ "nix-command" "flakes" ]; 
@@ -19,15 +22,13 @@ imports =
     [ 
       ./hardware-configuration.nix
 	<home-manager/nixos>
-#	./flake.nix
 ];
-#	home-manager = {
-#	extraSpecialArgs = { inherit inputs; };
-#	users = {
-#	astolfo = import ./home.nix;
-#};
-#};
+
+
+
   # Use the systemd-boot EFI boot loader.
+# Boot configurations & enable nvidia support & latest kernel
+
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = ["nodev"];
   boot.loader.grub.useOSProber = true;
@@ -35,16 +36,22 @@ imports =
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = ["nvidia"];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+
+
+# Hostname
   networking.hostName = "rider"; # Define your hostname.
+
+
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
    networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+
 # Set your time zone.
    time.timeZone = "Europe/Amsterdam";
-#nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+
 # Select internationalisation properties.
   # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
@@ -54,8 +61,19 @@ imports =
 
 
 
+#flatpak support!
 
 services.flatpak.enable = true;
+
+  services.flatpak.packages = [
+    { appId = "com.brave.Browser"; origin = "flathub";  }
+   { appId = "com.vinegarhq.vinegar"; origin = "flathub"; }
+"com.obsproject.Studio"
+    
+  ];
+
+services.flatpak.update.onActivation = true;
+
 services.packagekit.enable = true;
 services.fwupd.enable = true;
 
