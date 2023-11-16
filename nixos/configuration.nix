@@ -299,8 +299,7 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-#bind = $mainMod, G, exec, plasma-discover --backends flatpak # store
-bind = $mainMod, S, exec, grim -g "$(slurp)" #screenshit
+
 
 
 
