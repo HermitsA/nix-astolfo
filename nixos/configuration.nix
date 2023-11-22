@@ -174,7 +174,7 @@ libsForQt5.discover
 libsForQt5.packagekit-qt
 libportal-qt5
 grim
-
+protonup-qt
   
    ];
 
