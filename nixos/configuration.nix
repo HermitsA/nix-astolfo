@@ -67,8 +67,7 @@ imports =
 services.flatpak.enable = true;
 
   services.flatpak.packages = [
-   { appId = "com.vinegarhq.vinegar"; origin = "flathub"; }
-    
+	"com.vinegarhq.vinegar"; 
   ];
 
 services.flatpak.update.onActivation = true;
