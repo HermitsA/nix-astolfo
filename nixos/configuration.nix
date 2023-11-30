@@ -117,7 +117,7 @@ wayland.enable = true;
 
 #tokyo-night-sddm = pkgs.libsForQt5.callPackage ./tokyo-night-sddm/default.nix {};
 
-services.xserver.displayManager.sddm.theme = "${import ./tokyo.nix { inherit pkgs; }}"; 
+#services.xserver.displayManager.sddm.theme = "${import ./tokyo.nix { inherit pkgs; }}"; 
 #environment.systemPackages = with pkgs; [ tokyo-night-sddm ];
 
 
