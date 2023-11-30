@@ -21,7 +21,8 @@ system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 imports =
     [ 
       ./hardware-configuration.nix
-	<home-manager/nixos>
+	#<home-manager/nixos>
+	 (import "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos")
 ];
 
 
