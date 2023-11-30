@@ -38,6 +38,8 @@ imports =
   boot.initrd.kernelModules = ["nvidia"];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelModules = [ "kvm-amd" ];
+
 
 
 
@@ -63,6 +65,11 @@ imports =
 
 
 #flatpak support!
+
+virtualisation.libvirtd.enable = true;
+programs.virt-manager.enable = true;
+
+
 
 services.flatpak.enable = true;
 
@@ -162,7 +169,7 @@ services.pipewire = {
   # services.xserver.libinput.enable = true
  users.users.astolfo = {
      isNormalUser = true;
-     extraGroups = [ "wheel" ];
+     extraGroups = [ "wheel, libvirtd " ];
 	initialPassword = "astolfo"; 
 };
 
@@ -297,6 +304,12 @@ background_opacity 0.80
 }; 
 
 
+dconf.settings = {
+  "org/virt-manager/virt-manager/connections" = {
+    autoconnect = ["qemu:///system"];
+    uris = ["qemu:///system"];
+  };
+};
 
 
 wayland.windowManager.hyprland = {
