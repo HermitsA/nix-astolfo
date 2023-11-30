@@ -93,8 +93,28 @@ hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 	open = false;
 	nvidiaSettings = true;
 };
-services.xserver.displayManager.sddm.enable = true;
- 
+
+services.xserver.displayManager.sddm = {
+
+enable = true;
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      #autoLogin.enable = true;
+#autoLogin.user = "astolfo";
+
+theme = "${import ./tokyo.nix { inherit pkgs; }}"; 
+
+settings = {
+  Autologin = {
+    Session = "hyprland";
+    User = "astolfo";
+  };
+};
+
+
+wayland.enable = true;
+
+};
+
 #tokyo-night-sddm = pkgs.libsForQt5.callPackage ./tokyo-night-sddm/default.nix {};
 
 services.xserver.displayManager.sddm.theme = "${import ./tokyo.nix { inherit pkgs; }}"; 
