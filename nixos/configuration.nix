@@ -191,7 +191,6 @@ slurp
 wireplumber
 discord
 swww
-atlauncher
 steam
 rofi
 neofetch
@@ -202,8 +201,10 @@ libsForQt5.qt5.qtquickcontrols
 wlr-randr
 libsForQt5.discover
 libsForQt5.packagekit-qt
+qt6-wayland
 libportal-qt5
 grim
+prismlauncher
 protonup-qt
   
    ];
@@ -335,6 +336,7 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
+bind = $mainMod, SHIFT, S, exec, grim -g "$(slurp -d)" - | wl-copy
 
 
 
