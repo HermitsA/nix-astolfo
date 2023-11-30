@@ -130,8 +130,9 @@ services.xserver.videoDrivers =["nvidia"];
 #programs.poetry2nix.enable = true;
 #programs.hyprland.enableNvidiaPatches = true;
 programs.hyprland = {
-enable = true;
-enableNvidiaPatches = true;
+	enable = true;
+	enableNvidiaPatches = true;
+	portalPackage = pkgs.xdg-desktop-portal-hyprland;
 	xwayland.enable = true;
 };
 	environment.sessionVariables = {
