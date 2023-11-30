@@ -129,6 +129,8 @@ services.xserver.videoDrivers =["nvidia"];
 #programs.poetry.enable = true;
 #programs.poetry2nix.enable = true;
 #programs.hyprland.enableNvidiaPatches = true;
+
+
 programs.hyprland = {
 	enable = true;
 	enableNvidiaPatches = true;
@@ -139,7 +141,9 @@ programs.hyprland = {
 	WLR_NO_HARDWARE_CURSORS = "1";
 	NIXOS_OZONE_WL = "1";
 };
-xdg.portal.enable = true;
+#xdg.portal.enable = true;
+xdg.autostart.enable = true;
+
 #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   # Configure keymap in X11
  #  services.xserver.layout = "us";
