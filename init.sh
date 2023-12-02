@@ -3,10 +3,10 @@
 #FOR POST DISK PARTITION WILL          #
 #                                      #
 ########################################
-nix-shell -p git | sudo git clone https://github.com/HermitsA/nix-astolfo.git & exit
-sudo nixos-generate-config --root /mnt
-sudo cp nix-astolfo/nixos /mnt/etc/
-nix-shell -p git | sudo git clone https://github.com/HermitsA/nix-astolfo.git /mnt/nix-astolfo & exit
+nixos-generate-config --root /mnt
+sudo cp -r nixos /mnt/etc
+sudo mkdir -p /mnt/astolfos
+sudo cp -r Imgs&Ascii /mnt/astolfos
 sudo dd if=/dev/zero of=/mnt/.swapfile bs=1024 count=8000000
 sudo mkswap /mnt/.swapfile
 swapon /mnt/.swapfile
