@@ -71,13 +71,13 @@ programs.virt-manager.enable = true;
 
 
 
-services.flatpak.enable = true;
+#services.flatpak.enable = true;
 
-  services.flatpak.packages = [
-	"com.vinegarhq.vinegar"; 
-  ];
+#  services.flatpak.packages = [
+#	"com.vinegarhq.vinegar"; 
+#3  ];
 
-services.flatpak.update.onActivation = true;
+#services.flatpak.update.onActivation = true;
 
 services.packagekit.enable = true;
 services.fwupd.enable = true;
@@ -169,7 +169,7 @@ services.pipewire = {
   # services.xserver.libinput.enable = true
  users.users.astolfo = {
      isNormalUser = true;
-     extraGroups = [ "wheel, libvirtd " ];
+     extraGroups = [ "wheel" "libvirtd" ];
 	initialPassword = "astolfo"; 
 };
 
@@ -201,7 +201,7 @@ libsForQt5.qt5.qtquickcontrols
 wlr-randr
 libsForQt5.discover
 libsForQt5.packagekit-qt
-qt6-wayland
+#qt6-wayland
 libportal-qt5
 grim
 prismlauncher
@@ -324,6 +324,15 @@ exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRE
 exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 
+#my monitorconfig
+
+disable_hyprland_logo = true
+
+monitor=DP-2,1680x1050@59.882999,0x390,1.0
+monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
+monitor=DP-1,1680x1050@59.953999,4240x390,1.0
+
+
 $mainMod = SUPER
 
 # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
@@ -336,7 +345,6 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-bind = $mainMod, SHIFT, S, exec, grim -g "$(slurp -d)" - | wl-copy
 
 
 
