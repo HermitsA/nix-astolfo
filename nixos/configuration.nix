@@ -319,7 +319,9 @@ wayland.windowManager.hyprland = {
 enable = true;
 extraConfig = "
 
-exec-once = swww init && swww img /home/astolfo/nix-astolfo/Imgs\&Ascii/astolfo.png
+exec-once = swww init 
+exec-once = swww img /home/astolfo/nix-astolfo/Imgs\&Ascii/astolfo.png
+
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
