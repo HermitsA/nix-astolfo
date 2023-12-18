@@ -8,13 +8,15 @@
 #funny astolfo neofetch
 
 environment.interactiveShellInit = ''
-alias neofetch='neofetch --source /home/astolfo/nix-astolfo/Imgs&Ascii/astolfo'
+alias neofetch='neofetch --kitty --size 35% --source /astolfos/Imgs\&Ascii/astolfochibi.png';
+alias confs='sudo nano /etc/nixos/configuration.nix';
 '';
 
 #enable flakes and unfree
+nixpkgs.config.allowUnfree = true;
 
-	nixpkgs.config.allowUnfree = true;
-	nix.settings.experimental-features = [ "nix-command" "flakes" ]; 
+nix.settings.experimental-features = [ "nix-command" "flakes" ]; 
+
 system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
 
@@ -71,7 +73,7 @@ programs.virt-manager.enable = true;
 
 
 
-#services.flatpak.enable = true;
+services.flatpak.enable = true;
 
 #  services.flatpak.packages = [
 #	"com.vinegarhq.vinegar"; 
@@ -95,7 +97,7 @@ hardware = {
 };
 
 hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
- 	hardware.nvidia = {
+	hardware.nvidia = {
 	powerManagement.enable = true;
 	open = false;
 	nvidiaSettings = true;
@@ -317,7 +319,7 @@ wayland.windowManager.hyprland = {
 enable = true;
 extraConfig = "
 
-exec-once = swww init && swww img /astolfos/Imgs&Ascii/astolfo.png
+exec-once = swww init && swww img /home/astolfo/nix-astolfo/Imgs\&Ascii/astolfo.png
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -325,8 +327,6 @@ exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESK
 
 
 #my monitorconfig
-
-disable_hyprland_logo = true
 
 monitor=DP-2,1680x1050@59.882999,0x390,1.0
 monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
@@ -345,8 +345,6 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-bind = $mainMod, F, exec, swww clear
-bind = $mainMod, SHIFT, S, exec, sh /astolfos/screenshotpls
 
 
 

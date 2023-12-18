@@ -1,12 +1,7 @@
-########################################
-#                                      #
-#FOR POST DISK PARTITION WILL          #
-#                                      #
-########################################
 nixos-generate-config --root /mnt
 sudo cp -r nixos /mnt/etc
 sudo mkdir -p /mnt/astolfos
-sudo cp -r Imgs&Ascii /mnt/astolfos
+sudo cp -r Imgs\&Ascii /mnt/astolfos
 sudo dd if=/dev/zero of=/mnt/.swapfile bs=1024 count=8000000
 sudo mkswap /mnt/.swapfile
 swapon /mnt/.swapfile
