@@ -10,6 +10,7 @@
 environment.interactiveShellInit = ''
 alias neofetch='neofetch --kitty --size 35% --source /astolfos/Imgs\&Ascii/astolfochibi.png';
 alias confs='sudo nano /etc/nixos/configuration.nix';
+alias nixy='sudo nixos-rebuild switch';
 '';
 
 #enable flakes and unfree
@@ -37,8 +38,8 @@ imports =
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.kernelModules = ["nvidia"];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+#  boot.initrd.kernelModules = ["nvidia"];
+ # boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "kvm-amd" ];
 
@@ -63,7 +64,17 @@ imports =
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
-
+services.xserver.desktopManager.plasma5.enable = true;
+environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+  elisa
+  gwenview
+  okular
+  oxygen
+  khelpcenter
+  konsole
+  plasma-browser-integration
+  print-manager
+];
 
 
 #flatpak support!
@@ -93,15 +104,15 @@ hardware = {
 	opengl.enable = true;
 	opengl.driSupport = true;
 	opengl.driSupport32Bit = true;
-	nvidia.modesetting.enable = true;
+#	nvidia.modesetting.enable = true;
 };
 
-hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-	hardware.nvidia = {
-	powerManagement.enable = true;
-	open = false;
-	nvidiaSettings = true;
-};
+#hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+#	hardware.nvidia = {
+#	powerManagement.enable = true;
+#	open = false;
+#	nvidiaSettings = true;
+#};
 
 services.xserver.displayManager.sddm = {
 
@@ -133,8 +144,8 @@ wayland.enable = true;
 
 #services.xserver.displayManager.sddm.themes =
 #services.xserver.displayManager.swaylock.enable = true;
-services.xserver.videoDrivers =["nvidia"];
-#programs.waybar.enable = true;
+services.xserver.videoDrivers =["amd"];
+programs.waybar.enable = true;
 #programs.poetry.enable = true;
 #programs.poetry2nix.enable = true;
 #programs.hyprland.enableNvidiaPatches = true;
@@ -142,7 +153,7 @@ services.xserver.videoDrivers =["nvidia"];
 
 programs.hyprland = {
 	enable = true;
-	enableNvidiaPatches = true;
+#	enableNvidiaPatches = true;
 	portalPackage = pkgs.xdg-desktop-portal-hyprland;
 	xwayland.enable = true;
 };
@@ -177,6 +188,7 @@ services.pipewire = {
 
 
   environment.systemPackages = with pkgs; [
+pamixer
 discover
 wget
 nano
@@ -184,15 +196,27 @@ librewolf
 doas
 neofetch
 kitty
+#mpv
+#wf-recorder
+#wine
+rpcs3
+vinegar
+libguestfs-with-appliance
 discord
+#libunwind-dev libglfw3-dev libvulkan-dev vulkan-validationlayers-dev spirv-tools glslang-tools libspirv-cross-c-shared-dev libsox-dev 
 git
-gcc
+wl-clipboard
 cmake
 nwg-displays
 slurp
 wireplumber
 discord
 swww
+#lutris
+obs-studio
+qbittorrent
+dolphin
+htop
 steam
 rofi
 neofetch
@@ -201,15 +225,19 @@ libsForQt5.qt5.qtsvg
 libsForQt5.qt5.qtgraphicaleffects
 libsForQt5.qt5.qtquickcontrols
 wlr-randr
-libsForQt5.discover
-libsForQt5.packagekit-qt
+#webcord-vencord
+#stress
+#libsForQt5.discover
+#libsForQt5.packagekit-qt
 #qt6-wayland
 libportal-qt5
 grim
 prismlauncher
 protonup-qt
-  
-   ];
+#distrobox
+sensors
+#podman 
+ ];
 
 
 #ist packages installed in system profile. To search, run:
@@ -315,6 +343,10 @@ dconf.settings = {
 };
 
 
+programs.rofi.enable = true;
+programs.rofi.theme = purple;
+
+
 wayland.windowManager.hyprland = {
 enable = true;
 extraConfig = "
@@ -330,9 +362,13 @@ exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESK
 
 #my monitorconfig
 
-monitor=DP-2,1680x1050@59.882999,0x390,1.0
+monitor=DP-2,1680x1050@59.882999,0x0,1.0
 monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
 monitor=DP-1,1680x1050@59.953999,4240x390,1.0
+
+#monitor=DP-2,1680x1050@59.882999,0x390,1.0
+#monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
+#monitor=DP-1,1680x1050@59.953999,4240x390,1.0
 
 
 $mainMod = SUPER
@@ -347,7 +383,7 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-
+bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshotspls
 
 
 
