@@ -343,8 +343,8 @@ dconf.settings = {
 };
 
 
-#programs.rofi.enable = true;
-#programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
+programs.rofi.enable = true;
+programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
 
 
 wayland.windowManager.hyprland = {

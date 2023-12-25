@@ -1,4 +1,6 @@
-
+mount /dev/vda2 /mnt
+mkdir -p /mnt/boot
+mount /dev/vda1 /mnt/boot
 nixos-generate-config --root /mnt
 sudo cp -r nixos /mnt/etc
 sudo cp -r astolfos /mnt
@@ -9,4 +11,11 @@ sudo nix-channel --add https://github.com/nix-community/home-manager/archive/mas
 sudo nix-channel --add https://nixos.org/channels/nixos-unstable
 sudo nix-channel --update
 nixos-install
-cp nixos-rofi/* /mnt/etc/nixos/
+
+
+
+
+
+
+
+
