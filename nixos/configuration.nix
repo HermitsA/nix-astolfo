@@ -235,7 +235,7 @@ grim
 prismlauncher
 protonup-qt
 #distrobox
-sensors
+#sensors
 #podman 
  ];
 
@@ -344,7 +344,7 @@ dconf.settings = {
 
 
 programs.rofi.enable = true;
-programs.rofi.theme = purple;
+programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
 
 
 wayland.windowManager.hyprland = {
