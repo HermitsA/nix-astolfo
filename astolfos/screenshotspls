@@ -1,3 +1,0 @@
-wl-copy $(grim -g "$(slurp)")
-
-#grim -g "$(slurp)" || wl-copy
