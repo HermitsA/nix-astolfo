@@ -352,8 +352,8 @@ enable = true;
 extraConfig = "
 
 
-exec-once = swww init 
-exec-once = swww img /home/astolfo/nix-astolfo/Imgs\&Ascii/astolfo.png
+exec-once = swww query || swww init
+exec-once = swww img "/astolfos/nix-astolfo/Imgs\&Ascii/astolfo.png" &
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -383,7 +383,7 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshotspls
+bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" - | swappy -f --help
 
 
 

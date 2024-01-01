@@ -180,7 +180,12 @@ services.pipewire = {
 };
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true
- users.users.astolfo = {
+
+users.extraUsers.root = {
+        initialPassword = "astolfo";
+};
+ 
+users.users.astolfo = {
      isNormalUser = true;
      extraGroups = [ "wheel" "libvirtd" ];
 	initialPassword = "astolfo"; 
@@ -352,8 +357,8 @@ enable = true;
 extraConfig = "
 
 
-exec-once = swww init 
-exec-once = swww img /home/astolfo/nix-astolfo/Imgs\&Ascii/astolfo.png
+exec-once = swww query || swww init
+exec-once = swww img "/astolfos/nix-astolfo/Imgs\&Ascii/astolfo.png" &
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
