@@ -180,12 +180,7 @@ services.pipewire = {
 };
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true
-
-users.extraUsers.root = {
-        initialPassword = "astolfo";
-};
- 
-users.users.astolfo = {
+ users.users.astolfo = {
      isNormalUser = true;
      extraGroups = [ "wheel" "libvirtd" ];
 	initialPassword = "astolfo"; 
@@ -203,9 +198,10 @@ neofetch
 kitty
 #mpv
 #wf-recorder
+swappy
 #wine
 rpcs3
-vinegar
+#vinegar
 libguestfs-with-appliance
 discord
 #libunwind-dev libglfw3-dev libvulkan-dev vulkan-validationlayers-dev spirv-tools glslang-tools libspirv-cross-c-shared-dev libsox-dev 
@@ -348,8 +344,8 @@ dconf.settings = {
 };
 
 
-#programs.rofi.enable = true;
-#programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
+programs.rofi.enable = true;
+programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
 
 
 wayland.windowManager.hyprland = {
@@ -358,7 +354,7 @@ extraConfig = "
 
 
 exec-once = swww query || swww init
-exec-once = swww img "/astolfos/nix-astolfo/Imgs\&Ascii/astolfo.png" &
+exec-once = swww img /astolfos/Imgs\&Ascii/astolfo.png
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -388,9 +384,7 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" - | swappy -f --help
-
-
+bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshot 
 
 bind = $mainMod, left, movefocus, l
 bind = $mainMod, right, movefocus, r

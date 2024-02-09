@@ -9,4 +9,12 @@ sudo nix-channel --add https://nixos.org/channels/nixos-unstable
 sudo nix-channel --update
 nixos-install
 cp nixos-rofi/* /mnt/etc/nixos/
-reboot
+
+echo type reboot if you want to go into the normal thing.
+
+
+
+
+
+
+
