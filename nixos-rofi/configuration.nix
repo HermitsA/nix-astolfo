@@ -135,7 +135,7 @@ enable = true;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       #autoLogin.enable = true;
 #autoLogin.user = "astolfo";
 
-theme = "${import ./kek.nix { inherit pkgs; }}"; 
+#theme = "${import ./kek.nix { inherit pkgs; }}"; 
 
 settings = {
   Autologin = {
