@@ -10,7 +10,7 @@
 environment.interactiveShellInit = ''
 alias neofetch='neofetch --kitty --size 35% --source /astolfos/Imgs\&Ascii/astolfochibi.png';
 alias confs='sudo nano /etc/nixos/configuration.nix';
-alias nixy='sudo nixos-rebuild switch';
+alias nixy='sudo nixos-rebuild switch --upgrade-all';
 '';
 
 #enable flakes and unfree
@@ -29,6 +29,15 @@ imports =
 ];
 
 
+#optimize storage
+nix.optimise.automatic = true;
+nix.settings.auto-optimise-store = true;
+
+nix.gc = {
+  automatic = true;
+  dates = "weekly";
+  options = "--delete-older-than 30d";
+};
 
   # Use the systemd-boot EFI boot loader.
 # Boot configurations & enable nvidia support & latest kernel
@@ -64,18 +73,23 @@ imports =
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
-services.xserver.desktopManager.plasma5.enable = true;
-environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-  elisa
-  gwenview
-  okular
-  oxygen
-  khelpcenter
-  konsole
-  plasma-browser-integration
-  print-manager
-];
+services.desktopManager.plasma6.enable = true;
 
+
+# environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+# elisa
+#  gwenview
+#  okular
+#  oxygen
+#  khelpcenter
+#  konsole
+#  plasma-browser-integration
+#  print-manager
+#];
+
+#kdePackages.kdenlive.enable = true;
+
+virtualisation.waydroid.enable = true;
 
 #flatpak support!
 
@@ -121,7 +135,7 @@ enable = true;
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       #autoLogin.enable = true;
 #autoLogin.user = "astolfo";
 
-theme = "${import ./tokyo.nix { inherit pkgs; }}"; 
+theme = "${import ./kek.nix { inherit pkgs; }}"; 
 
 settings = {
   Autologin = {
@@ -188,6 +202,10 @@ services.pipewire = {
 
 
   environment.systemPackages = with pkgs; [
+(pkgs.discord.override {
+  withVencord = true;
+})
+catppuccin-sddm-corners
 pamixer
 discover
 wget
@@ -196,13 +214,15 @@ librewolf
 doas
 neofetch
 kitty
+temurin-bin-21
 #mpv
 #wf-recorder
+swappy
 #wine
 rpcs3
-vinegar
+#vinegar
 libguestfs-with-appliance
-discord
+
 #libunwind-dev libglfw3-dev libvulkan-dev vulkan-validationlayers-dev spirv-tools glslang-tools libspirv-cross-c-shared-dev libsox-dev 
 git
 wl-clipboard
@@ -225,6 +245,7 @@ libsForQt5.qt5.qtsvg
 libsForQt5.qt5.qtgraphicaleffects
 libsForQt5.qt5.qtquickcontrols
 wlr-randr
+mangohud
 #webcord-vencord
 #stress
 #libsForQt5.discover
@@ -252,12 +273,12 @@ environment.variables.EDITOR = "nano";
    };
 # List services that you want to enable:
 # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+   services.openssh.enable = true;
 # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+   networking.firewall.enable = false;
 # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
@@ -319,7 +340,7 @@ enable = true;
 theme = "Wild Cherry";
 extraConfig = " 
 font_family      jetbrains mono nerd font
-font_size 12
+font_size 20
 bold_font        auto
 italic_font      auto
 bold_italic_font auto
@@ -327,7 +348,7 @@ mouse_hide_wait  2.0
 cursor_shape     block
 url_color        #0087bd
 url_style        dotted
-#Close the terminal without confirmation
+Close the terminal without confirmation
 confirm_os_window_close 0
 background_opacity 0.80
 ";
@@ -353,7 +374,7 @@ extraConfig = "
 
 
 exec-once = swww query || swww init
-exec-once = swww img "/astolfos/nix-astolfo/Imgs\&Ascii/astolfo.png" &
+exec-once = swww img /astolfos/Imgs\&Ascii/astolfo.png
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
@@ -362,13 +383,14 @@ exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESK
 
 #my monitorconfig
 
-monitor=DP-2,1680x1050@59.882999,0x0,1.0
-monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
-monitor=DP-1,1680x1050@59.953999,4240x390,1.0
-
-#monitor=DP-2,1680x1050@59.882999,0x390,1.0
+#monitor=DP-2,2560x1440@59.951,0x0,1.0
 #monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
-#monitor=DP-1,1680x1050@59.953999,4240x390,1.0
+#monitor=DP-1,1920x1200@59.953999,4240x390,1.0
+
+monitor=DP-2,2560x1440@74.779999,0x0,1.0
+monitor=DP-3,1920x1200@59.950001,5120x240,1.0
+monitor=HDMI-A-1,2560x1440@59.951,2560x0,1.0
+
 
 
 $mainMod = SUPER
@@ -383,9 +405,7 @@ bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discord
-bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshot
-
-
+bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshot 
 
 bind = $mainMod, left, movefocus, l
 bind = $mainMod, right, movefocus, r
