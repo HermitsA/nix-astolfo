@@ -418,7 +418,7 @@ bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
-bind = $mainMod, D, exec, discord-ptb 
+bind = $mainMod, D, exec, discordptb 
 bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshot 
 
 bind = $mainMod, left, movefocus, l
