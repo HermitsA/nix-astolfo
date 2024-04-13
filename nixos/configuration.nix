@@ -75,6 +75,16 @@ nix.gc = {
   #   useXkbConfig = true; # use xkbOptions in tty.
 services.desktopManager.plasma6.enable = true;
 
+  programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+
+    # Add any missing dynamic libraries for unpackaged programs
+
+    # here, NOT in environment.systemPackages
+
+  ];
+
 
 # environment.plasma5.excludePackages = with pkgs.libsForQt5; [
 # elisa
@@ -128,7 +138,7 @@ hardware = {
 #	nvidiaSettings = true;
 #};
 
-services.xserver.displayManager.sddm = {
+services.displayManager.sddm = {
 
 enable = true;
 
@@ -159,7 +169,7 @@ wayland.enable = true;
 #services.xserver.displayManager.sddm.themes =
 #services.xserver.displayManager.swaylock.enable = true;
 services.xserver.videoDrivers =["amd"];
-programs.waybar.enable = true;
+#programs.waybar.enable = true;
 #programs.poetry.enable = true;
 #programs.poetry2nix.enable = true;
 #programs.hyprland.enableNvidiaPatches = true;
@@ -177,7 +187,7 @@ programs.hyprland = {
 };
 #xdg.portal.enable = true;
 xdg.autostart.enable = true;
-
+xdg.portal = { enable = true; extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; }; 
 #xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   # Configure keymap in X11
  #  services.xserver.layout = "us";
@@ -202,7 +212,7 @@ services.pipewire = {
 
 
   environment.systemPackages = with pkgs; [
-(pkgs.discord.override {
+(pkgs.discord-ptb.override {
   withVencord = true;
 })
 catppuccin-sddm-corners
@@ -219,7 +229,7 @@ temurin-bin-21
 #wf-recorder
 swappy
 #wine
-rpcs3
+#rpcs3
 #vinegar
 libguestfs-with-appliance
 
@@ -230,7 +240,7 @@ cmake
 nwg-displays
 slurp
 wireplumber
-discord
+discord-ptb
 swww
 #lutris
 obs-studio
@@ -274,11 +284,14 @@ environment.variables.EDITOR = "nano";
 # List services that you want to enable:
 # Enable the OpenSSH daemon.
    services.openssh.enable = true;
+
+
 # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
    networking.firewall.enable = false;
+networking.interfaces.eno1.wakeOnLan.enable = true;
 # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
@@ -364,7 +377,7 @@ dconf.settings = {
 };
 
 
-#programs.rofi.enable = true;
+programs.rofi.enable = true;
 #programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
 
 
@@ -375,12 +388,13 @@ extraConfig = "
 
 exec-once = swww query || swww init
 exec-once = swww img /astolfos/Imgs\&Ascii/astolfo.png
+exec-once = waybar
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
-
-
+exec-once = steam
+exec-once = librewolf
 #my monitorconfig
 
 #monitor=DP-2,2560x1440@59.951,0x0,1.0
@@ -404,7 +418,7 @@ bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
-bind = $mainMod, D, exec, discord
+bind = $mainMod, D, exec, discord-ptb 
 bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshot 
 
 bind = $mainMod, left, movefocus, l
