@@ -16,8 +16,11 @@ alias nixy='sudo nixos-rebuild switch --upgrade-all';
 #enable flakes and unfree
 nixpkgs.config.allowUnfree = true;
 
-nix.settings.experimental-features = [ "nix-command" "flakes" ]; 
-
+  nix.settings = {
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+experimental-features = [ "nix-command" "flakes" ];   
+};
 system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
 
@@ -109,20 +112,6 @@ programs.virt-manager.enable = true;
 
 
 services.flatpak.enable = true;
-
-#  services.flatpak.packages = [
-#	"com.vinegarhq.vinegar"; 
-#3  ];
-
-#services.flatpak.update.onActivation = true;
-
-services.packagekit.enable = true;
-services.fwupd.enable = true;
-
-
-
-  # };
-# Enable the X11 windowing system.
 services.xserver.enable = true;
 hardware = {
 	opengl.enable = true;
@@ -159,25 +148,13 @@ wayland.enable = true;
 
 };
 
-#tokyo-night-sddm = pkgs.libsForQt5.callPackage ./tokyo-night-sddm/default.nix {};
-
-#services.xserver.displayManager.sddm.theme = "${import ./tokyo.nix { inherit pkgs; }}"; 
-#environment.systemPackages = with pkgs; [ tokyo-night-sddm ];
 
 
 
-#services.xserver.displayManager.sddm.themes =
-#services.xserver.displayManager.swaylock.enable = true;
 services.xserver.videoDrivers =["amd"];
-#programs.waybar.enable = true;
-#programs.poetry.enable = true;
-#programs.poetry2nix.enable = true;
-#programs.hyprland.enableNvidiaPatches = true;
-
 
 programs.hyprland = {
 	enable = true;
-#	enableNvidiaPatches = true;
 	portalPackage = pkgs.xdg-desktop-portal-hyprland;
 	xwayland.enable = true;
 };
@@ -188,13 +165,6 @@ programs.hyprland = {
 #xdg.portal.enable = true;
 xdg.autostart.enable = true;
 xdg.portal = { enable = true; extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; }; 
-#xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  # Configure keymap in X11
- #  services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e,caps:escape";
-# Enable CUPS to print documents.
-  # services.printing.enable = true;
-# Enable sound.
    security.rtkit.enable = true;
 services.pipewire = {
 	enable = true;
@@ -202,8 +172,6 @@ services.pipewire = {
 	alsa.support32Bit = true;
 	pulse.enable = true;
 };
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true
  users.users.astolfo = {
      isNormalUser = true;
      extraGroups = [ "wheel" "libvirtd" ];
@@ -231,7 +199,6 @@ swappy
 #wine
 #rpcs3
 #vinegar
-libguestfs-with-appliance
 
 #libunwind-dev libglfw3-dev libvulkan-dev vulkan-validationlayers-dev spirv-tools glslang-tools libspirv-cross-c-shared-dev libsox-dev 
 git
@@ -250,6 +217,7 @@ htop
 steam
 rofi
 neofetch
+#bottles
 libsForQt5.qt5ct
 libsForQt5.qt5.qtsvg
 libsForQt5.qt5.qtgraphicaleffects
@@ -305,26 +273,16 @@ networking.interfaces.eno1.wakeOnLan.enable = true;
 system.stateVersion = "23.11";
 
 
-#home.file.".config/rofi/config.rasi".text = "
-#@import "${pkgs.rofi-unwrapped}/share/rofi/themes/purple.rasi"
-#";
-
-
-
-
 home-manager.users.astolfo = 
-
-#home.file.".config/rofi/config.rasi".text = "
-#@import "${pkgs.rofi-unwrapped}/share/rofi/themes/purple.rasi"
-#";
-
-
 
 {config, pkgs, ...}: let
   flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
 
   hyprland = (import flake-compat {
-    src = builtins.fetchTarball "https://github.com/hyprwm/Hyprland/archive/master.tar.gz";
+    src = builtins.fetchGit  {
+      url = "https://github.com/hyprwm/Hyprland.git";
+      submodules = true;
+    };
   }).defaultNix;
 in {
   imports = [
