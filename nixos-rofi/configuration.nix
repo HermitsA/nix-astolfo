@@ -114,10 +114,12 @@ programs.virt-manager.enable = true;
 services.flatpak.enable = true;
 services.xserver.enable = true;
 hardware = {
-	hardware.graphics.enable = true
-#	nvidia.modesetting.enable = true;
+        graphics = {
+                enable = true;
+                enable32Bit = true;
+                };
+#       nvidia.modesetting.enable = true;
 };
-
 #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 #	hardware.nvidia = {
 #	powerManagement.enable = true;
