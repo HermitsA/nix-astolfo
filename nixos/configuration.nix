@@ -114,9 +114,7 @@ programs.virt-manager.enable = true;
 services.flatpak.enable = true;
 services.xserver.enable = true;
 hardware = {
-	opengl.enable = true;
-	opengl.driSupport = true;
-	opengl.driSupport32Bit = true;
+hardware.graphics.enable = true;
 #	nvidia.modesetting.enable = true;
 };
 
