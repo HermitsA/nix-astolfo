@@ -1,3 +1,4 @@
+#!/bin/bash
 nixos-generate-config --root /mnt:
 sudo cp -r nixos /mnt/etc:
 sudo cp -r astolfos /mnt:

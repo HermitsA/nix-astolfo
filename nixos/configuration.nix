@@ -756,7 +756,7 @@ exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CUR
 exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 exec-once = sleep .5 && swww init
 exec-once = sleep .5 && waybar
-exec-once = sleep 5 && swww img /astolfos/content/astolfo.png
+exec-once = sleep 3 && swww img /astolfos/content/astolfo.png
 exec-once = steam
 exec-once = librewolf
 #my monitorconfig
