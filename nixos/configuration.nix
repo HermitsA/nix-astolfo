@@ -8,7 +8,7 @@
 #funny astolfo neofetch
 
 environment.interactiveShellInit = ''
-alias neofetch='neofetch --kitty --size 35% --source /astolfos/Imgs\&Ascii/astolfochibi.png';
+alias neofetch='neofetch --kitty --size 35% --source /astolfos/content/astolfochibi.png';
 alias confs='sudo nano /etc/nixos/configuration.nix';
 alias nixy='sudo nixos-rebuild switch --upgrade-all';
 '';
@@ -50,8 +50,13 @@ nix.gc = {
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
-#  boot.initrd.kernelModules = ["nvidia"];
- # boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.initrd.kernelModules = ["vfio_pci" "vfio_iommu_type1" "vfio"];
+#  boot.kernelModules = ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"]; 
+# boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.kernelParams = [
+"amd_iommu=on"
+"vfio-pci.ids=1002:164e"
+];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "kvm-amd" ];
 
@@ -70,55 +75,45 @@ nix.gc = {
    time.timeZone = "Europe/Amsterdam";
 
 
-# Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkbOptions in tty.
 services.desktopManager.plasma6.enable = true;
 
   programs.nix-ld.enable = true;
 
   programs.nix-ld.libraries = with pkgs; [
 
-    # Add any missing dynamic libraries for unpackaged programs
-
-    # here, NOT in environment.systemPackages
-
   ];
 
 
-# environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-# elisa
-#  gwenview
-#  okular
-#  oxygen
-#  khelpcenter
-#  konsole
-#  plasma-browser-integration
-#  print-manager
-#];
-
-#kdePackages.kdenlive.enable = true;
 
 virtualisation.waydroid.enable = true;
 
 #flatpak support!
 
-virtualisation.libvirtd.enable = true;
-programs.virt-manager.enable = true;
+virtualisation = {
 
+    
 
+libvirtd = {
+enable = true;
+qemu = {
+		swtpm.enable = true;
+		ovmf.enable = true;
+		ovmf.packages = [ pkgs.OVMFFull.fd ];
+			};
+		};
+	};
 services.flatpak.enable = true;
 services.xserver.enable = true;
 hardware = {
-        graphics = {
-                enable = true;
-                enable32Bit = true;
+	graphics = {
+		enable = true;
+		enable32Bit = true;
 		};
-#       nvidia.modesetting.enable = true;
-};           
+#	nvidia.modesetting.enable = true;
+};
+
+
+
 #hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 #	hardware.nvidia = {
 #	powerManagement.enable = true;
@@ -131,17 +126,6 @@ services.displayManager.sddm = {
 enable = true;
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       #autoLogin.enable = true;
-#autoLogin.user = "astolfo";
-
-#theme = "${import ./kek.nix { inherit pkgs; }}"; 
-
-settings = {
-  Autologin = {
-    Session = "hyprland";
-    User = "astolfo";
-  };
-};
-
 
 wayland.enable = true;
 
@@ -150,7 +134,34 @@ wayland.enable = true;
 
 
 
+fonts.packages = with pkgs; [
+material-design-icons
+hack-font
+noto-fonts-cjk-serif
+noto-fonts-cjk-sans
+noto-fonts-emoji
+noto-fonts-extra
+nerdfonts
+fira-code
+fira
+fira-mono
+fira-code-nerdfont
+fira-code-symbols
+inter
+fantasque-sans-mono
+noto-fonts 
+jetbrains-mono
+cascadia-code
+comfortaa
+icomoon-feather
+iosevka
+source-code-pro
+];
+
+
 services.xserver.videoDrivers =["amd"];
+
+
 
 programs.hyprland = {
 	enable = true;
@@ -178,10 +189,14 @@ services.pipewire = {
 };
 
 
+
+
   environment.systemPackages = with pkgs; [
 (pkgs.discord-ptb.override {
   withVencord = true;
 })
+papirus-icon-theme
+waybar
 catppuccin-sddm-corners
 pamixer
 discover
@@ -192,15 +207,9 @@ doas
 neofetch
 kitty
 temurin-bin-21
-#mpv
-#wf-recorder
 swappy
-#wine
-#rpcs3
-#vinegar
-
-#libunwind-dev libglfw3-dev libvulkan-dev vulkan-validationlayers-dev spirv-tools glslang-tools libspirv-cross-c-shared-dev libsox-dev 
 git
+nordic
 wl-clipboard
 cmake
 nwg-displays
@@ -208,13 +217,21 @@ slurp
 wireplumber
 discord-ptb
 swww
-#lutris
 obs-studio
 qbittorrent
+fuzzel
 dolphin
 htop
 steam
+appimage-run
+fuse
 rofi
+virt-manager
+starship
+
+virt-viewer
+win-virtio
+adwaita-icon-theme
 neofetch
 #bottles
 libsForQt5.qt5ct
@@ -224,6 +241,7 @@ libsForQt5.qt5.qtquickcontrols
 wlr-randr
 mangohud
 #webcord-vencord
+pciutils
 #stress
 #libsForQt5.discover
 #libsForQt5.packagekit-qt
@@ -238,55 +256,23 @@ protonup-qt
  ];
 
 
-#ist packages installed in system profile. To search, run:
-  # $ nix search wget
 environment.variables.EDITOR = "nano";
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
    programs.mtr.enable = true;
    programs.gnupg.agent = {
      enable = true;
      enableSSHSupport = true;
    };
-# List services that you want to enable:
-# Enable the OpenSSH daemon.
    services.openssh.enable = true;
 
 
-# Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
    networking.firewall.enable = false;
 networking.interfaces.eno1.wakeOnLan.enable = true;
-# Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-# This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html)
 system.stateVersion = "23.11";
 
 
 home-manager.users.astolfo = 
 
-{config, pkgs, ...}: let
-  flake-compat = builtins.fetchTarball "https://github.com/edolstra/flake-compat/archive/master.tar.gz";
-
-  hyprland = (import flake-compat {
-    src = builtins.fetchGit  {
-      url = "https://github.com/hyprwm/Hyprland.git";
-      submodules = true;
-    };
-  }).defaultNix;
-in {
-  imports = [
-    hyprland.homeManagerModules.default
-  ];
+{config, inputs, pkgs, ...}: {
 
   programs.librewolf = {
     enable = true;
@@ -294,7 +280,7 @@ in {
     settings = {
       "webgl.disabled" = false;
       "privacy.resistFingerprinting" = true;
-      "privacy.clearOnShutdown.history" = false;
+       "privacy.clearOnShutdown.history" = false;
       "privacy.clearOnShutdown.cookies" = false;
       "network.cookie.lifetimePolicy" = 0;
 
@@ -303,6 +289,423 @@ in {
 
 
 
+
+
+home.file = { 
+".config/fuzzel/fuzzel.ini" = {
+text = ''
+
+dpi-aware=no
+width=12.5
+font=Hack:weight=bold:size=15
+line-height=25
+fields=name,generic,comment,categories,filename,keywords
+terminal=foot -e
+prompt="❯   " 
+layer=overlay
+[colors]
+background=282a36fa
+selection=3d4474fa
+border=fffffffa
+
+[border]
+radius=5
+
+[dmenu]
+exit-immediately-if-empty=yes
+
+''; 
+executable = false; };
+};
+
+home.file = { 
+"./screenshot" = {
+text = ''
+grim -g "$(slurp)" - | swappy -f -
+''; 
+executable = true; };
+};
+
+home.file = { 
+".config/waybar/config.jsonc" = {
+text = ''
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "spacing": 0,
+  "margin-top": 8,
+  "margin-left": 0,
+  "margin-right": 0,
+  "modules-left": ["hyprland/workspaces", "custom/dnd"],
+  "modules-center": ["custom/spotify"],
+  "modules-right": [
+    "pulseaudio",
+    "cpu",
+    "memory",
+    "disk",
+    "temperature",
+    "backlight",
+    "keyboard-state",
+    "sway/language",
+    "battery",
+    "battery#bat2",
+    "clock",
+    "tray"
+  ],
+  "keyboard-state": {
+    "numlock": true,
+    "capslock": true,
+    "format": "{name} {icon}",
+    "format-icons": {
+      "locked": "",
+      "unlocked": ""
+    }
+  },
+  "hyprland/workspaces": {
+    "on-click": "activate",
+    "sort-by-number": true
+  },
+  "sway/mode": {
+    "format": "<span style=\"italic\">{}</span>"
+  },
+  "sway/scratchpad": {
+    "format": "{icon} {count}",
+    "show-empty": false,
+    "format-icons": ["", ""],
+    "tooltip": true,
+    "tooltip-format": "{app}: {title}"
+  },
+  "mpd": {
+    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+    "format-disconnected": "Disconnected ",
+    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+    "unknown-tag": "N/A",
+    "interval": 2,
+    "consume-icons": {
+      "on": " "
+    },
+    "random-icons": {
+      "off": "<span color=\"#f53c3c\"></span> ",
+      "on": " "
+    },
+    "repeat-icons": {
+      "on": " "
+    },
+    "single-icons": {
+      "on": "1 "
+    },
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    },
+    "tooltip-format": "MPD (connected)",
+    "tooltip-format-disconnected": "MPD (disconnected)"
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "tray": {
+    // "icon-size": 60,
+    "spacing": 15
+  },
+  "clock": {
+    // "timezone": "Europe/Paris",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}"
+  },
+  "cpu": {
+    "format": "{usage}% ",
+    "tooltip": false
+  },
+  "memory": {
+    "format": "{}% "
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": [""],
+    "tooltip": false
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{percent}% {icon}",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "tooltip": false
+  },
+  "battery": {
+    "states": {
+      // "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon} ",
+    "format-charging": "{capacity}% 󱐋",
+    "format-plugged": "{capacity}% ",
+    "format-alt": "{time} {icon}",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": ["", "", "", "", ""],
+    "tooltip": false
+  },
+  "battery#bat2": {
+    "bat": "BAT2"
+  },
+  "network": {
+    // "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": "{essid} ({signalStrength}%) ",
+    "format-ethernet": "{ipaddr}/{cidr} ",
+    "tooltip-format": "{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "Disconnected ⚠",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+  },
+  "pulseaudio": {
+    // "scroll-step": 1, // %, can be a float
+    "format": "{volume}% {icon}",
+    "format-bluetooth": "{volume}% ",
+    "format-bluetooth-muted": "󰂲",
+    "format-muted": "󰝟",
+    // "format-source": "{volume}% ",
+    // "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "tooltip": false
+  },
+  "custom/spotify": {
+    "exec": "playerctl -p spotify -a metadata --format '{\"text\": \"{{markup_escape(trunc(artist, 30))}} - {{markup_escape(trunc(title, 30))}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F",
+    "format": "  {}",
+    "return-type": "json",
+    "on-click": "playerctl -p spotify play-pause",
+    "on-double-click": "playerctl -p spotify next",
+    "on-triple-click": "playerctl -p spotify previous && playerctl -p spotify previous",
+    "on-scroll-up": "hyprctl dispatch focuswindow Spotify",
+    "tooltip": false
+  },
+  "disk": {
+    "interval": 30,
+    "format": "{percentage_free}% 󰨣"
+  },
+  "custom/dnd": {
+    "interval": "once",
+    "return-type": "json",
+    "format": "{}{icon}",
+    "format-icons": {
+      "default": "",
+      "dnd": " "
+    },
+    "on-click": "makoctl mode | grep 'do-not-disturb' && makoctl mode -r do-not-disturb || makoctl mode -a do-not-disturb; pkill -RTMIN+11 waybar",
+    "on-click-right": "makoctl restore",
+    "exec": "printf '{\"alt\":\"%s\",\"tooltip\":\"mode: %s\"}' $(makoctl mode | grep -q 'do-not-disturb' && echo dnd || echo default) $(makoctl mode | tail -1)",
+    "signal": 11
+  }
+}
+
+''; 
+executable = false; };
+};
+
+home.file = { 
+".config/waybar/style.css" = {
+text = ''
+* {
+  /* `otf-font-awesome` is required to be installed for icons */
+  font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 21px;
+}
+
+window#waybar {
+  background-color: rgba(43, 48, 59, 0);
+  border-bottom: 3px solid rgba(100, 114, 125, 0);
+  color: #ffffff;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  padding: 0;
+  margin: 0;
+}
+button {
+  /* Use box-shadow instead of border so the text isn't offset */
+  box-shadow: inset 0 -3px transparent;
+  /* Avoid rounded borders under each button name */
+  border: none;
+  border-radius: 0;
+}
+
+/* workspaces widget is kinda egoist */
+#workspaces {
+  background: #332e41;
+  border-radius: 30px;
+  margin: 0px 10px;
+}
+
+#workspaces button.active {
+  background: #4f64c4;
+  border-radius: 30px;
+}
+
+#workspaces button.urgent {
+  background-color: #eb4d4b;
+  border-radius: inherit;
+}
+
+#workspaces button:hover {
+  background: #af81f0;
+  border-radius: inherit;
+}
+
+/* General settings for all widgets */
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#tray,
+#mode,
+#custom-spotify,
+#idle_inhibitor,
+#scratchpad,
+#custom-spotify,
+#custom-dnd,
+#mpd {
+  padding: 0px 20px;
+  margin: 0;
+  color: #d4d5d9;
+  background-color: #332e41;
+}
+
+/* Settings for groups */
+#custom-dnd,
+#pulseaudio,
+#custom-spotify {
+  margin: 0px 10px;
+  border-radius: 30px;
+}
+
+#battery.critical:not(.charging) {
+  background-color: #f53c3c;
+  color: #ffffff;
+}
+
+label:focus {
+  background-color: #000000;
+}
+
+#cpu {
+  border-radius: 30px 0px 0px 30px;
+}
+
+#custom-media {
+  background-color: #66cc99;
+  color: #2a5c45;
+  min-width: 200px;
+}
+
+#custom-media.custom-spotify {
+  background-color: #66cc99;
+}
+
+#custom-media.custom-vlc {
+  background-color: #ffa000;
+}
+
+#temperature.critical {
+  background-color: #eb4d4b;
+}
+
+#tray {
+  border-radius: 0px 30px 30px 0px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: #eb4d4b;
+}
+
+#idle_inhibitor {
+  background-color: #2d3436;
+}
+
+#idle_inhibitor.activated {
+  background-color: #ecf0f1;
+  color: #2d3436;
+}
+
+#mpd {
+  background-color: #66cc99;
+  color: #2a5c45;
+}
+
+#mpd.disconnected {
+  background-color: #f53c3c;
+}
+
+#mpd.stopped {
+  background-color: #90b1b1;
+}
+
+#mpd.paused {
+  background-color: #51a37a;
+}
+
+#language {
+  background: #00b093;
+  color: #740864;
+  padding: 0 10px;
+  margin: 0 10px;
+  min-width: 32px;
+}
+
+#keyboard-state {
+  background: #97e1ad;
+  color: #000000;
+  padding: 0 0px;
+  margin: 0 10px;
+  min-width: 32px;
+}
+
+#keyboard-state > label {
+  padding: 0 10px;
+}
+
+#keyboard-state > label.locked {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad.empty {
+  background-color: transparent;
+}
+
+''; 
+executable = false; };
+};
 
 
 programs.kitty = {
@@ -334,34 +737,33 @@ dconf.settings = {
 };
 
 
-programs.rofi.enable = true;
-#programs.rofi.theme = /run/current-system/sw/share/rofi/themes/purple.rasi;
+
+
 
 
 wayland.windowManager.hyprland = {
+
 enable = true;
 extraConfig = "
-
-
-exec-once = swww query || swww init
-exec-once = swww img /astolfos/Imgs\&Ascii/astolfo.png
-exec-once = waybar
+env = NIXOS_OZONE_WL, 1
+env = NIXPKGS_ALLOW_UNFREE, 1
+env = XDG_CURRENT_DESKTOP, Hyprland
+env = XDG_SESSION_TYPE, wayland
+env = XDG_SESSION_DESKTOP, Hyprland
 exec-once = export MOZ_ENABLE_WAYLAND=1
 exec-once = export XDG_CURRENT_DESKTOP=Hyprland
 exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = sleep .5 && swww init
+exec-once = sleep .5 && waybar
+exec-once = sleep 5 && swww img /astolfos/content/astolfo.png
 exec-once = steam
 exec-once = librewolf
 #my monitorconfig
 
-#monitor=DP-2,2560x1440@59.951,0x0,1.0
-#monitor=HDMI-A-1,2560x1440@59.951,1680x0,1.0
-#monitor=DP-1,1920x1200@59.953999,4240x390,1.0
-
-monitor=DP-2,2560x1440@74.779999,0x0,1.0
-monitor=DP-3,1920x1200@59.950001,5120x240,1.0
-monitor=HDMI-A-1,2560x1440@59.951,2560x0,1.0
-
+monitor=DP-1,2560x1440@59.95,7040x0,1.0
+monitor=DP-3,1920x1200@59.95,2576x240,1.0
+monitor=HDMI-A-1,2560x1440@59.95,4480x0,1.0
 
 
 $mainMod = SUPER
@@ -372,11 +774,11 @@ bind = $mainMod, C, killactive,
 bind = $mainMod, M, exit,
 bind = $mainMod, E, exec, dolphin
 bind = $mainMod, V, togglefloating,
-bind = $mainMod, R, exec, rofi -show drun
+bind = $mainMod, R, exec, fuzzel 
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 bind = $mainMod, D, exec, discordptb 
-bind = $mainMod SHIFT, S, exec, bash /astolfos/screenshot 
+bind = $mainMod SHIFT, S, exec, sh /home/astolfo/screenshot
 
 bind = $mainMod, left, movefocus, l
 bind = $mainMod, right, movefocus, r
