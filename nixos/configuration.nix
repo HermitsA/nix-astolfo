@@ -376,7 +376,6 @@ dconf.settings = {
   };
 };
 
-};
 
 home.stateVersion = "23.11";
 };
