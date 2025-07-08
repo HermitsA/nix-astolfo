@@ -22,6 +22,9 @@ nixpkgs.config.allowUnfree = true;
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
 experimental-features = [ "nix-command" "flakes" ];   
 };
+              nixpkgs.config.permittedInsecurePackages = [
+                "python-2.7.18.8"
+              ];
 
 system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
@@ -40,6 +43,9 @@ boot.binfmt.registrations.appimage = {
 
 nixpkgs.config.packageOverrides = pkgs: {  
 ciscoPacketTracer8 = pkgs.callPackage /home/astolfo/projects/package.nix {};
+pince = pkgs.callPackage /home/astolfo/projects/pince/package.nix {};
+#libxml2 = pkgs.callPackage /home/astolfo/projects/libxml2.nix {};
+
 
   steam = pkgs.steam.override {
       extraPkgs = pkgs: with pkgs; [
@@ -98,10 +104,9 @@ nix.gc = {
 
 services.desktopManager.plasma6.enable = true;
 
-virtualisation.waydroid.enable = true;
+#virtualisation.waydroid.enable = true;
 
 #flatpak support!
-
 
 
 qt.enable = true;
@@ -159,7 +164,7 @@ services.pipewire = {
 };
  users.users.astolfo = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "libvirtd" ];
+     extraGroups = [ "wheel" "libvirtd" "vboxusers" ];
 	initialPassword = "astolfo"; 
 };
 
@@ -184,10 +189,12 @@ gradle
 
 winePackages.unstableFull
 
-#shadps4
+shadps4
   #libimobiledevice
  # ifuse
 r2modman
+
+espeak
 
 
 #steamcmd
@@ -220,8 +227,8 @@ curlFull
 protontricks
 winetricks
 
-
-
+pince
+#atlauncher
 
 #sc-controller
 #gamescope
@@ -256,6 +263,8 @@ filezilla
 #lutris
 wireplumber
 discord-ptb
+
+moonlight-qt
 
 anki-bin
 ciscoPacketTracer8
@@ -365,7 +374,6 @@ Close the terminal without confirmation
 confirm_os_window_close 0
 background_opacity 0.80
 ";
-
 }; 
 
 
@@ -376,7 +384,8 @@ dconf.settings = {
   };
 };
 
-
 home.stateVersion = "23.11";
+
 };
+
 }
