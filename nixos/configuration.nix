@@ -1,18 +1,14 @@
-# Edit this configuration file to define what should be installed on
+## Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 { inputs, config, lib, pkgs, ... }:
 {
 
 environment.interactiveShellInit = ''
-alias neofetch='neofetch --kitty --size 35% --source /astolfos/content/astolfochibi.png';
+alias neofetch='fastfetch --kitty --size 35% --source /astolfos/content/astolfochibi.png';
 alias confs='sudo nano /etc/nixos/configuration.nix';
 alias nixy='sudo nixos-rebuild switch --upgrade-all';
 '';
-
-#              nixpkgs.config.permittedInsecurePackages = [
- #               "dotnet-sdk-7.0.410"
-  #            ];
 
 #enable flakes and unfree
 nixpkgs.config.allowUnfree = true;
@@ -22,14 +18,34 @@ nixpkgs.config.allowUnfree = true;
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
 experimental-features = [ "nix-command" "flakes" ];   
 };
-              nixpkgs.config.permittedInsecurePackages = [
-                "python-2.7.18.8"
-              ];
 
 system.autoUpgrade.channel = "https://nixos.org/channels/nixos-unstable";
 
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+#  hardware.bluetooth.enable = true; # enables support for Bluetooth
+#  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+
+hardware.bluetooth = {
+  enable = true;
+  powerOnBoot = true;
+  settings = {
+    General = {
+      # Shows battery charge of connected devices on supported
+      # Bluetooth adapters. Defaults to 'false'.
+      Experimental = true;
+      # When enabled other devices can connect faster to us, however
+      # the tradeoff is increased power consumption. Defaults to
+      # 'false'.
+      FastConnectable = true;
+    };
+    Policy = {
+      # Enable all controllers when they are found. This includes
+      # adapters present on start as well as adapters that are plugged
+      # in later on. Defaults to 'true'.
+      AutoEnable = true;
+    };
+  };
+};
 
 
 boot.binfmt.registrations.appimage = {
@@ -40,13 +56,10 @@ boot.binfmt.registrations.appimage = {
   mask = ''\xff\xff\xff\xff\x00\x00\x00\x00\xff\xff\xff'';
   magicOrExtension = ''\x7fELF....AI\x02'';
 };
-
 nixpkgs.config.packageOverrides = pkgs: {  
-ciscoPacketTracer8 = pkgs.callPackage /home/astolfo/projects/package.nix {};
-pince = pkgs.callPackage /home/astolfo/projects/pince/package.nix {};
-#libxml2 = pkgs.callPackage /home/astolfo/projects/libxml2.nix {};
-
-
+pince = pkgs.callPackage /home/astolfo/projects/pince/pince.nix {};
+vintstory = pkgs.callPackage /home/astolfo/projects/vintstory/package.nix {};
+#gradle2 = pkgs.callPackage /home/astolfo/projects/gradle.nix {};
   steam = pkgs.steam.override {
       extraPkgs = pkgs: with pkgs; [
         pango
@@ -63,6 +76,10 @@ imports =
 	#<home-manager/nixos>
 	 (import "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos")
 ];
+
+
+
+
 
 
 #optimize storage
@@ -84,6 +101,7 @@ nix.gc = {
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = ["amdgpu"];
+  boot.supportedFilesystems = [ "ntfs" ];
 #  boot.kernelModules = ["vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio"]; 
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -106,6 +124,31 @@ services.desktopManager.plasma6.enable = true;
 
 #virtualisation.waydroid.enable = true;
 
+#virtualisation.vmware.guest.enable = true;
+
+# services.hydra = {
+#    enable = true;
+#    hydraURL = "http://localhost:3000";
+#    notificationSender = "hydra@localhost";
+#    buildMachinesFiles = [];
+#    useSubstitutes = true;
+# };
+
+
+#  systemd.tmpfiles.rules = 
+#  let
+#    rocmEnv = pkgs.symlinkJoin {
+#      name = "rocm-combined";
+#      paths = with pkgs.rocmPackages; [
+#        rocblas
+#        hipblas
+#        clr
+#      ];
+#    };
+#  in [
+#    "L+    /opt/rocm   -    -    -     -    ${rocmEnv}"
+#  ];
+
 #flatpak support!
 
 
@@ -122,31 +165,32 @@ enable = true;
 libvirtd = {
 enable = true;
 qemu = {
-		swtpm.enable = true;
-		ovmf.enable = true;
-		ovmf.packages = [ pkgs.OVMFFull.fd ];
+#		swtpm.enable = true;
+#		ovmf.enable = true;
+#		ovmf.packages = [ pkgs.OVMFFull.fd ];
 			};
 		};
 	};
 services.flatpak.enable = true;
 services.xserver.enable = true;
 services.xserver.videoDrivers = [ "amdgpu" ];
-hardware = {
-	graphics = {
-#	extraPackages = [
-  #  pkgs.amdvlk
- # ];
-  #extraPackages32 = [
-   # pkgs.driversi686Linux.amdvlk
-  #];
-		enable = true;
-		enable32Bit = true;
-		};
+
+hardware.graphics = {
+enable=true;
+enable32Bit=true;
 };
+hardware.amdgpu.opencl.enable = true;
+
 # environment.variables.VK_ICD_FILENAMES =
  #   "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
  #environment.variables.VK_ICD_FILENAMES =
 #    "/run/opengl-driver/share/vulkan/icd.d/amd_icd64.json";
+#environment.variables._JAVA_OPTIONS = -Dawt.useSystemAAFontSettings=lcd;
+
+
+
+services.lact.enable = true;
+hardware.amdgpu.overdrive.enable = true;
 
 services.displayManager.sddm = {
 
@@ -154,6 +198,26 @@ enable = true;
 wayland.enable = true;
 
 };
+
+  programs.obs-studio = {
+    enable = true;
+
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-backgroundremoval
+      obs-pipewire-audio-capture
+      obs-vaapi #optional AMD hardware acceleration
+      obs-gstreamer
+      obs-vkcapture
+    ];
+  };
+
+
+
+
+
+services.displayManager.autoLogin.enable = true;
+services.displayManager.autoLogin.user = "astolfo"; 
 
 security.rtkit.enable = true;
 services.pipewire = {
@@ -164,18 +228,32 @@ services.pipewire = {
 };
  users.users.astolfo = {
      isNormalUser = true;
-     extraGroups = [ "wheel" "libvirtd" "vboxusers" ];
+     extraGroups = [ "wheel" "libvirtd" "storage" ];
 	initialPassword = "astolfo"; 
 };
 
   environment.systemPackages = with pkgs; [
 (pkgs.discord-ptb.override { withVencord = true; })
 
-(ciscoPacketTracer8.overrideAttrs { dontCheckForBrokenSymlinks = true; })
-
 (pkgs.bottles.override { removeWarningPopup = true;} )
 
+(pkgs.gradle.override { java = jdk25;})
 
+
+mcaselector
+
+wakeonlan
+
+icu
+icu.dev
+
+vintstory
+actiona
+
+
+visualvm
+eclipse-mat
+clinfo
 
 #vscode-fhs
 gpu-screen-recorder
@@ -184,12 +262,13 @@ gpu-screen-recorder-gtk
 #dotnetCorePackages.dotned_8.sdk
 #dotnet-sdk_7
 
-gradle
+#gradle2.gradle_9
 
+gradle
 
 winePackages.unstableFull
 
-shadps4
+#shadps4
   #libimobiledevice
  # ifuse
 r2modman
@@ -206,20 +285,15 @@ corectrl
     gamemodeSupport = true;
     # Change Java runtimes available to Prism Launcher
     jdks = [
-temurin-jre-bin
-temurin-bin-24
-graalvm-ce
-graalvm-oracle
-zulu8
-openjdk8-bootstrap
 temurin-jre-bin-8
+zulu8
 temurin-jre-bin
-zulu
-
+zulu25
+temurin-jre-bin-25
     ];
   })
 
-
+unzip
 bottles
 curlFull
 #gnutls
@@ -229,10 +303,11 @@ winetricks
 
 pince
 #atlauncher
-
+librewolf
 #sc-controller
 #gamescope
 kdePackages.kdenlive
+kdePackages.wallpaper-engine-plugin
 vesktop
 #papirus-icon-theme
 waybar
@@ -242,9 +317,9 @@ pamixer
 #discover
 wget
 nano
-librewolf
+brave
 #doas
-neofetch
+fastfetch
 steam-run
 tree
 kitty
@@ -265,13 +340,10 @@ wireplumber
 discord-ptb
 
 moonlight-qt
-
+libreoffice
 anki-bin
-ciscoPacketTracer8
-
 #krita
 swww
-obs-studio
 qbittorrent
 fuzzel
 kdePackages.dolphin
@@ -288,7 +360,7 @@ heroic-unwrapped
 #virt-viewer
 #win-virtio
 adwaita-icon-theme
-neofetch
+fastfetch
 #bottles
 libsForQt5.qt5ct
 libsForQt5.qt5.qtsvg
@@ -320,16 +392,16 @@ environment.variables.EDITOR = "nano";
    };
    services.openssh.enable = true;
 
-  services.sunshine = {
-    enable = true;
-    autoStart = true;
-    capSysAdmin = true;
-    openFirewall = true;
+ # services.sunshine = {
+ #   enable = true;
+ #   autoStart = true;
+ #   capSysAdmin = true;
+ #   openFirewall = true;
     
-  };
+ # };
 
 
-   networking.firewall.enable = false;
+networking.firewall.enable = false;
 networking.interfaces.eno1.wakeOnLan.enable = true;
 system.stateVersion = "24.11";
 
@@ -338,18 +410,6 @@ home-manager.users.astolfo =
 
 {config, inputs, pkgs, ...}: {
 
-  programs.librewolf = {
-    enable = true;
-    # Enable WebGL, cookies and history
-    settings = {
-      "webgl.disabled" = false;
-      "privacy.resistFingerprinting" = true;
-       "privacy.clearOnShutdown.history" = false;
-      "privacy.clearOnShutdown.cookies" = false;
-      "network.cookie.lifetimePolicy" = 0;
-
-    };
-  };
 
 
 
